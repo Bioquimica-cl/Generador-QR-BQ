@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de QR</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin: 0 0 20px;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    input[type="url"], input[type="text"] {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    button:hover { background: #1d4ed8; }
+    .error {
+      color: #f87171;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+    .resultado {
+      margin-top: 24px;
+      text-align: center;
+    }
+    .resultado img {
+      width: 100%;
+      max-width: 260px;
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+    }
+    .download-form {
+      margin-top: 16px;
+    }
+    .download-btn {
+      background: #16a34a;
+    }
+    .download-btn:hover { background: #15803d; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Generador de código QR</h1>
+    <form method="POST" action="/">
+      <input type="url" name="url" placeholder="https://ejemplo.com" value="{{ url }}" required>
+      <button type="submit">Generar QR</button>
+    </form>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if qr_base64 %}
+      <div class="resultado">
+        <img src="data:image/png;base64,{{ qr_base64 }}" alt="Código QR generado">
+        <form class="download-form" method="POST" action="/download">
+          <input type="hidden" name="url" value="{{ url }}">
+          <button type="submit" class="download-btn">Descargar QR</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
