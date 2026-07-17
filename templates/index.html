@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generador de QR</title>
+  <title>Generador de QR — bioquimica.cl</title>
   <style>
     * { box-sizing: border-box; }
+    :root {
+      --cyan: #29ABE2;
+      --orange: #F7941D;
+      --yellow: #FFD400;
+      --red: #ED1C24;
+      --ink: #111111;
+    }
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      background: #ffffff;
+      color: var(--ink);
       min-height: 100vh;
       margin: 0;
       display: flex;
@@ -18,17 +25,25 @@
       padding: 24px;
     }
     .card {
-      background: #1e293b;
+      background: #ffffff;
       border-radius: 16px;
       padding: 32px;
       width: 100%;
       max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid #e5e5e5;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .logo {
+      display: block;
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto 24px;
     }
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       margin: 0 0 20px;
       text-align: center;
+      color: var(--ink);
     }
     form {
       display: flex;
@@ -38,24 +53,30 @@
     input[type="url"], input[type="text"] {
       padding: 12px 14px;
       border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: #e2e8f0;
+      border: 1px solid #d4d4d4;
+      background: #ffffff;
+      color: var(--ink);
       font-size: 1rem;
+    }
+    input[type="url"]:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(41, 171, 226, 0.2);
     }
     button {
       padding: 12px 14px;
       border-radius: 8px;
       border: none;
-      background: #2563eb;
+      background: var(--orange);
       color: white;
       font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.15s;
     }
-    button:hover { background: #1d4ed8; }
+    button:hover { background: #e07f00; }
     .error {
-      color: #f87171;
+      color: var(--red);
       font-size: 0.9rem;
       margin-top: 4px;
     }
@@ -69,18 +90,27 @@
       background: white;
       padding: 12px;
       border-radius: 12px;
+      border: 1px solid #e5e5e5;
     }
     .download-form {
       margin-top: 16px;
     }
     .download-btn {
-      background: #16a34a;
+      background: var(--cyan);
     }
-    .download-btn:hover { background: #15803d; }
+    .download-btn:hover { background: #1c8fc4; }
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
   </style>
 </head>
 <body>
   <div class="card">
+    <img class="logo" src="{{ url_for('static', filename='logo_bioquimica.png') }}" alt="bioquimica.cl">
     <h1>Generador de código QR</h1>
     <form method="POST" action="/">
       <input type="url" name="url" placeholder="https://ejemplo.com" value="{{ url }}" required>
